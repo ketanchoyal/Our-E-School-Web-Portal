@@ -51,7 +51,6 @@ unlinked_spec.ds
 # Firebase Related
 GoogleService-Info.plist
 google-services.json
-index.html
 Server.dart
 
 # Android related
