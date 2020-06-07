@@ -6,10 +6,10 @@ on: [push,pull_request]
 jobs:
   build_deploy:
     #if conditional to prevent a job from running
-    if: github.event_name != 'pull_request'
+    if: (github.base_ref == 'master' && (github.event_name == 'pull_request' || github.event_name == 'push'))
     runs-on: macos-latest
     #Identifies any jobs that must complete successfully before this job will run.
-    needs: [drive_ios,drive_android,test]
+    # needs: [drive_ios,drive_android,test]
     name: Build web
     steps:
       - uses: actions/checkout@v1
