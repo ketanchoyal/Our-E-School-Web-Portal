@@ -1,0 +1,52 @@
+#The name of your workflow.
+name:  Build and deploy
+# Trigger the workflow on push or pull request
+on: [push,pull_request]
+#A workflow run is made up of one or more jobs. Jobs run in parallel by default.
+jobs:
+  build_deploy:
+    #if conditional to prevent a job from running
+    if: (github.base_ref == 'master' && (github.event_name == 'pull_request' || github.event_name == 'push'))
+    runs-on: macos-latest
+    #Identifies any jobs that must complete successfully before this job will run.
+    # needs: [drive_ios,drive_android,test]
+    name: Build web
+    steps:
+      - uses: actions/checkout@v1
+      - uses: subosito/flutter-action@v1
+        with:
+          channel: 'beta'
+      # This action sets up a java environment
+      # https://github.com/actions/setup-java
+      # - uses: actions/setup-java@v1
+      #   with:
+      #     java-version: '12.x'
+      # #enable linux,macos,windows   and  web
+      # - run: flutter  config --enable-web
+      # - run: flutter  config --enable-linux-desktop
+      # - run: flutter  config --enable-macos-desktop
+      # - run: flutter  config --enable-windows-desktop
+      # - run: flutter pub get
+      # # build macOS desktop version
+      # - run: flutter build macos --release
+      # # build Android version
+      # - run: flutter build apk --debug --split-per-abi
+      # # This action will create a github release and optionally upload an artifact to it.
+      # # https://github.com/ncipollo/release-action
+      # - name: Create a Release APK
+      #   uses: ncipollo/release-action@v1
+      #   with:
+      #     artifacts: "build/app/outputs/apk/debug/*.apk,build/macos/Build/Products/Release/*.app"
+      #     token: ${{ secrets.GITHUB_TOKEN }}
+      # build Flutter web version
+      - run: flutter config --enable-web
+      - run: flutter pub get
+      - run: flutter build web
+      # Handle the deploy process of your project to GitHub Pages.
+      # https://github.com/JamesIves/github-pages-deploy-action
+      - uses: JamesIves/github-pages-deploy-action@releases/v3
+        with:
+          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          BASE_BRANCH: master
+          BRANCH: gh-pages
+          FOLDER: build/web
