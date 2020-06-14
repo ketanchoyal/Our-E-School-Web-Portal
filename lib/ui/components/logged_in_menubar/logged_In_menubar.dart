@@ -15,30 +15,32 @@ class LogedInMenuBar extends StatelessWidget {
     return ViewModelBuilder<LoggedInMenuBarModel>.reactive(
         viewModelBuilder: () => LoggedInMenuBarModel(),
         builder: (context, model, child) {
-        return Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Container(
-              margin: EdgeInsets.symmetric(vertical: 30),
-              child: Row(
-                children: <Widget>[
-                  GestureDetector(
-                    onTap: () =>
-                        Navigator.popUntil(context, ModalRoute.withName("/")),
-                    child: Text("OUR E-SCHOOL",
-                        style: GoogleFonts.montserrat(
-                            color: textMenuBarPrimary,
-                            fontSize: 30,
-                            letterSpacing: 3,
-                            fontWeight: FontWeight.w500)),
-                  ),
-                  Flexible(
-                    child: Container(
-                      alignment: Alignment.centerRight,
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Container(
+                margin: EdgeInsets.symmetric(vertical: 30),
+                child: Column(
+                  children: <Widget>[
+                    GestureDetector(
+                      onTap: () =>
+                          Navigator.popUntil(context, ModalRoute.withName("/")),
+                      child: Text("OUR E-SCHOOL",
+                          style: GoogleFonts.montserrat(
+                              color: textMenuBarPrimary,
+                              fontSize: 30,
+                              letterSpacing: 3,
+                              fontWeight: FontWeight.w500)),
+                    ),
+                    Container(
+                      alignment: Alignment.center,
                       child: Wrap(
+                        alignment: WrapAlignment.center,
+                        runAlignment: WrapAlignment.center,
                         children: <Widget>[
                           Card(
-                            elevation: selectedPage == SelectedPage.ADDUSER ? 10 : 0,
+                            elevation:
+                                selectedPage == SelectedPage.ADDUSER ? 10 : 0,
                             color: Colors.transparent,
                             child: FlatButton(
                               onPressed: () {},
@@ -67,7 +69,8 @@ class LogedInMenuBar extends StatelessWidget {
                             ),
                           ),
                           Card(
-                            elevation: selectedPage == SelectedPage.ABOUT ? 10 : 0,
+                            elevation:
+                                selectedPage == SelectedPage.ABOUT ? 10 : 0,
                             color: Colors.transparent,
                             child: FlatButton(
                               onPressed: () {},
@@ -98,17 +101,15 @@ class LogedInMenuBar extends StatelessWidget {
                         ],
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            Container(
-                height: 1,
-                margin: EdgeInsets.only(bottom: 30),
-                color: Color(0xFFEEEEEE)),
-          ],
-        );
-      }
-    );
+              Container(
+                  height: 1,
+                  margin: EdgeInsets.only(bottom: 30),
+                  color: Color(0xFFEEEEEE)),
+            ],
+          );
+        });
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:oureschoolweb/ui/components/Resources.dart';
 import 'package:oureschoolweb/ui/components/color.dart';
 import 'package:oureschoolweb/ui/components/footer.dart';
@@ -10,6 +11,7 @@ import 'package:oureschoolweb/ui/helper/Enums.dart';
 import 'package:oureschoolweb/ui/pages/login/login_page_view_model.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:stacked/stacked.dart';
+import 'package:velocity_x/velocity_x.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key key}) : super(key: key);
@@ -24,7 +26,7 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
-          margin: EdgeInsets.symmetric(horizontal: 32),
+          // margin: EdgeInsets.symmetric(horizontal: 32),
           child: Column(
             children: <Widget>[
               MenuBar(
@@ -49,12 +51,13 @@ class ResponsiveLoginUI extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        if (ResponsiveWrapper.of(context).equals(MOBILE) || ResponsiveWrapper.of(context).isSmallerThan(MOBILE)) {
-          return MobileLoginUI();
+        if (ResponsiveWrapper.of(context).equals(MOBILE) ||
+            ResponsiveWrapper.of(context).isSmallerThan(MOBILE)) {
+          return MobileLoginUI().p(5);
         } else if (ResponsiveWrapper.of(context).equals(TABLET)) {
-          return TabletLoginUI();
+          return TabletLoginUI().p32();
         } else {
-          return DesktopLoginUI();
+          return DesktopLoginUI().p32();
         }
       },
     );
@@ -68,35 +71,38 @@ class MobileLoginUI extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Container(
-          width: MediaQuery.of(context).size.width,
-          height: 500,
-          child: Card(
-            elevation: 10,
-            color: kmainColorParents.withOpacity(0.7),
-            child: Stack(
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.all(10.0),
-                  child: Opacity(
-                    opacity: 0.3,
-                    child: Image.asset(
-                      ImageAssets.login_image2x,
-                      fit: BoxFit.fitWidth,
-                      filterQuality: FilterQuality.high,
-                    ),
+    print(MediaQuery.of(context).size.width);
+    return AnimatedPadding(
+      duration: Duration(milliseconds: 400),
+      padding: MediaQuery.of(context).size.width > 550
+          ? EdgeInsets.all(20)
+          : EdgeInsets.all(0),
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        height: 500,
+        child: Card(
+          elevation: 10,
+          color: kmainColorParents.withOpacity(0.7),
+          child: Stack(
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.all(10.0),
+                child: Opacity(
+                  opacity: 0.3,
+                  child: Image.asset(
+                    ImageAssets.login_image2x,
+                    fit: BoxFit.fitWidth,
+                    filterQuality: FilterQuality.high,
                   ),
                 ),
-                Container(
-                  child: LoginForm(),
-                )
-              ],
-            ),
+              ),
+              Container(
+                child: LoginForm(),
+              )
+            ],
           ),
         ),
-      ],
+      ),
     );
   }
 }
@@ -219,10 +225,12 @@ class LoginForm extends StatelessWidget {
                   ),
                   child: Align(
                     alignment: Alignment.center,
-                    child: TextBodyExtraLarge(
-                      text: "SIGNIN",
-                      color: Colors.white,
-                    ),
+                    child: "SIGNIN"
+                        .text
+                        .textStyle(GoogleFonts.montserrat())
+                        .color(Colors.white)
+                        .xl5
+                        .make(),
                   ),
                 ),
                 Container(

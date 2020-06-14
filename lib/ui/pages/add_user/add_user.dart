@@ -12,6 +12,7 @@ import 'package:oureschoolweb/ui/helper/Enums.dart';
 import 'package:oureschoolweb/ui/pages/add_user/add_user_view_model.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:stacked/stacked.dart';
+import 'package:velocity_x/velocity_x.dart';
 
 class AddUser extends StatelessWidget {
   const AddUser({Key key}) : super(key: key);
@@ -21,7 +22,7 @@ class AddUser extends StatelessWidget {
     return Scaffold(
         body: SingleChildScrollView(
       child: Container(
-        margin: EdgeInsets.symmetric(horizontal: 32),
+        // margin: EdgeInsets.symmetric(horizontal: 32),
         child: Column(
           children: <Widget>[
             LogedInMenuBar(selectedPage: SelectedPage.ADDUSER),
@@ -45,11 +46,11 @@ class ResponsiveAddUserUI extends StatelessWidget {
       builder: (context, constraints) {
         if (ResponsiveWrapper.of(context).equals(MOBILE) ||
             ResponsiveWrapper.of(context).isSmallerThan(MOBILE)) {
-          return MobileAddUserUI();
+          return MobileAddUserUI().p(5);
         } else if (ResponsiveWrapper.of(context).equals(TABLET)) {
-          return TabletAddUserUI();
+          return TabletAddUserUI().p32();
         } else {
-          return DesktopAddUserUI();
+          return DesktopAddUserUI().p32();
         }
       },
     );
@@ -63,35 +64,41 @@ class MobileAddUserUI extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Container(
-          width: MediaQuery.of(context).size.width,
-          height: 600,
-          child: Card(
-            elevation: 10,
-            color: kmainColorParents.withOpacity(0.7),
-            child: Stack(
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.all(10.0),
-                  child: Opacity(
-                    opacity: 0.3,
-                    child: Image.asset(
-                      ImageAssets.add_user2x,
-                      fit: BoxFit.fitWidth,
-                      filterQuality: FilterQuality.high,
+    return AnimatedPadding(
+      duration: Duration(milliseconds: 400),
+      padding: MediaQuery.of(context).size.width > 550
+          ? EdgeInsets.all(20)
+          : EdgeInsets.all(0),
+      child: Column(
+        children: <Widget>[
+          Container(
+            width: MediaQuery.of(context).size.width,
+            height: 600,
+            child: Card(
+              elevation: 10,
+              color: kmainColorParents.withOpacity(0.7),
+              child: Stack(
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.all(10.0),
+                    child: Opacity(
+                      opacity: 0.3,
+                      child: Image.asset(
+                        ImageAssets.add_user2x,
+                        fit: BoxFit.fitWidth,
+                        filterQuality: FilterQuality.high,
+                      ),
                     ),
                   ),
-                ),
-                Container(
-                  child: AddUserForm(),
-                )
-              ],
+                  Container(
+                    child: AddUserForm(),
+                  )
+                ],
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
@@ -276,24 +283,24 @@ class _AddUserFormState extends State<AddUserForm> {
                     groupValue: sharedValue,
                     children: {
                       0: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 30),
+                        padding: EdgeInsets.symmetric(horizontal: 20),
                         child: Text(
                           "Student",
-                          style: subtitleTextStyle(context),
+                          style: bodyTextStyle(context),
                         ),
                       ),
                       1: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 30),
+                        padding: EdgeInsets.symmetric(horizontal: 20),
                         child: Text(
                           "Parent",
-                          style: subtitleTextStyle(context),
+                          style: bodyTextStyle(context),
                         ),
                       ),
                       2: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 30),
+                        padding: EdgeInsets.symmetric(horizontal: 20),
                         child: Text(
                           "Teacher",
-                          style: subtitleTextStyle(context),
+                          style: bodyTextStyle(context),
                         ),
                       ),
                     },
