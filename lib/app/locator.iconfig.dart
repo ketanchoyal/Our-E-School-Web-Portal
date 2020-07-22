@@ -4,8 +4,11 @@
 // InjectableConfigGenerator
 // **************************************************************************
 
+import 'package:oureschoolweb/core/services/auth_services.dart';
 import 'package:stacked_services/stacked_services.dart';
-import 'package:oureschoolweb/services/thirdparty_services_module.dart';
+import 'package:oureschoolweb/core/services/thirdparty_services_module.dart';
+import 'package:oureschoolweb/core/services/services.dart';
+import 'package:oureschoolweb/core/services/shared_preference.dart';
 import 'package:get_it/get_it.dart';
 
 void $initGetIt(GetIt g, {String environment}) {
@@ -14,6 +17,11 @@ void $initGetIt(GetIt g, {String environment}) {
       () => thirdPartyServicesModule.dialogService);
   g.registerLazySingleton<NavigationService>(
       () => thirdPartyServicesModule.navigationService);
+
+  //Eager singletons must be registered in the right order
+  g.registerSingleton<SharedPreferencesHelper>(SharedPreferencesHelper());
+  g.registerSingleton<AuthServices>(AuthServices());
+  g.registerSingleton<Services>(Services());
 }
 
 class _$ThirdPartyServicesModule extends ThirdPartyServicesModule {

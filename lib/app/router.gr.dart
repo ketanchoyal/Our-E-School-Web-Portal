@@ -7,21 +7,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:auto_route/auto_route.dart';
-import 'package:oureschoolweb/ui/pages/add_user/add_user.dart';
 import 'package:oureschoolweb/ui/pages/home_page.dart';
 import 'package:oureschoolweb/ui/pages/login/login_page.dart';
 import 'package:oureschoolweb/ui/pages/register/register_page.dart';
+import 'package:oureschoolweb/ui/pages/add_user/add_user.dart';
 
 abstract class Routes {
   static const homePage = '/';
   static const loginPage = '/login-page';
   static const registerPage = '/register-page';
   static const addUser = '/add-user';
+  static const all = {
+    homePage,
+    loginPage,
+    registerPage,
+    addUser,
+  };
 }
 
 class Router extends RouterBase {
-  //This will probably be removed in future versions
-  //you should call ExtendedNavigator.ofRouter<Router>() directly
+  @override
+  Set<String> get allRoutes => Routes.all;
+
+  @Deprecated('call ExtendedNavigator.ofRouter<Router>() directly')
   static ExtendedNavigatorState get navigator =>
       ExtendedNavigator.ofRouter<Router>();
 
@@ -72,9 +80,9 @@ class Router extends RouterBase {
   }
 }
 
-//**************************************************************************
+// *************************************************************************
 // Arguments holder classes
-//***************************************************************************
+// **************************************************************************
 
 //HomePage arguments holder class
 class HomePageArguments {

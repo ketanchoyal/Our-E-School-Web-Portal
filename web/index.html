@@ -18,9 +18,6 @@
   <link rel="manifest" href="manifest.json">
 </head>
 <body id="app-container">
-  <!-- This script installs service_worker.js to provide PWA functionality to
-       application. For more information, see:
-       https://developers.google.com/web/fundamentals/primers/service-workers -->
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', function () {
@@ -29,5 +26,30 @@
     }
   </script>
   <script src="main.dart.js" type="application/javascript"></script>
+  <!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/7.16.1/firebase-app.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+<script src="https://www.gstatic.com/firebasejs/7.16.1/firebase-analytics.js"></script>
+<script src="https://www.gstatic.com/firebasejs/4.11.0/firebase.js"></script>
+<script src="https://www.gstatic.com/firebasejs/4.11.0/firebase-firestore.js"></script>
+
+<script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyDufDI0n7ttd4VySCQKUHxfEG4DNIdDHVQ",
+    authDomain: "our-e-school.firebaseapp.com",
+    databaseURL: "https://our-e-school.firebaseio.com",
+    projectId: "our-e-school",
+    storageBucket: "our-e-school.appspot.com",
+    messagingSenderId: "518969649711",
+    appId: "1:518969649711:web:27d37c0d85bef1dbd734da",
+    measurementId: "G-FCMCS0PVT8"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  firebase.analytics();
+</script>
 </body>
 </html>

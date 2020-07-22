@@ -12,6 +12,7 @@ import 'package:oureschoolweb/ui/pages/login/login_page_view_model.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:stacked/stacked.dart';
 import 'package:velocity_x/velocity_x.dart';
+import 'package:stacked_hooks/stacked_hooks.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key key}) : super(key: key);
@@ -23,22 +24,26 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: Container(
-          // margin: EdgeInsets.symmetric(horizontal: 32),
-          child: Column(
-            children: <Widget>[
-              MenuBar(
-                selectedPage: SelectedPage.LOGIN,
+    return ViewModelBuilder.nonReactive(
+        viewModelBuilder: () => LoginPageViewModel(),
+        builder: (context, model, child) {
+          return Scaffold(
+            body: SingleChildScrollView(
+              child: Container(
+                // margin: EdgeInsets.symmetric(horizontal: 32),
+                child: Column(
+                  children: <Widget>[
+                    MenuBar(
+                      selectedPage: SelectedPage.LOGIN,
+                    ),
+                    ResponsiveLoginUI(),
+                    Footer(),
+                  ],
+                ),
               ),
-              ResponsiveLoginUI(),
-              Footer(),
-            ],
-          ),
-        ),
-      ),
-    );
+            ),
+          );
+        });
   }
 }
 
@@ -201,114 +206,115 @@ class TabletLoginUI extends StatelessWidget {
   }
 }
 
-class LoginForm extends StatelessWidget {
+class LoginForm extends HookViewModelWidget<LoginPageViewModel> {
   const LoginForm({
     Key key,
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return ViewModelBuilder<LoginPageViewModel>.reactive(
-        viewModelBuilder: () => LoginPageViewModel(),
-        builder: (context, model, child) {
-          return Center(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Container(
-                  padding: EdgeInsets.only(bottom: 40),
-                  constraints: BoxConstraints(
-                    maxWidth: 400,
-                    minWidth: 200,
-                  ),
-                  child: Align(
-                    alignment: Alignment.center,
-                    child: "SIGNIN"
-                        .text
-                        .textStyle(GoogleFonts.montserrat())
-                        .color(Colors.white)
-                        .xl5
-                        .make(),
-                  ),
-                ),
-                Container(
-                  padding: EdgeInsets.all(10),
-                  constraints: BoxConstraints(
-                    maxWidth: 400,
-                    minWidth: 200,
-                  ),
-                  child: TextField(
-                    onChanged: (schoolCode) {},
-                    keyboardType: TextInputType.text,
-                    style: bodyTextStyle(context, color: Colors.white),
-                    decoration: kTextFieldDecorationWithIcon(context,
-                            icon: Icons.school)
-                        .copyWith(
-                      hintText: StringConstants.school_name_code_hint,
-                      labelText: StringConstants.school_name_code,
-                    ),
-                  ),
-                ),
-                Container(
-                  padding: EdgeInsets.all(10),
-                  constraints: BoxConstraints(
-                    maxWidth: 400,
-                    minWidth: 200,
-                  ),
-                  child: TextField(
-                    onChanged: (email) {},
-                    keyboardType: TextInputType.emailAddress,
-                    style: bodyTextStyle(context, color: Colors.white),
-                    decoration:
-                        kTextFieldDecorationWithIcon(context, icon: Icons.email)
-                            .copyWith(
-                      hintText: StringConstants.email_hint,
-                      labelText: StringConstants.email,
-                    ),
-                  ),
-                ),
-                Container(
-                  padding: EdgeInsets.all(10),
-                  constraints: BoxConstraints(
-                    maxWidth: 400,
-                    minWidth: 200,
-                  ),
-                  child: TextField(
-                    onChanged: (password) {},
-                    keyboardType: TextInputType.text,
-                    obscureText: true,
-                    style: bodyTextStyle(context, color: Colors.white),
-                    decoration: kTextFieldDecorationWithIcon(
-                      context,
-                      icon: Icons.vpn_key,
-                    ).copyWith(
-                      hintText: StringConstants.password_hint,
-                      labelText: StringConstants.password,
-                    ),
-                  ),
-                ),
-                Container(
-                    padding: EdgeInsets.all(10),
-                    constraints: BoxConstraints(
-                        maxWidth: 400, minWidth: 200, minHeight: 80),
-                    child: FlatButton(
-                      hoverColor: Colors.redAccent.shade700,
-                      color: Colors.redAccent,
-                      onPressed: () {
-                        model.navigateToAddUser();
-                      },
-                      child: Center(
-                        child: TextHeadlineSecondary(
-                          text: StringConstants.login.toUpperCase(),
-                          color: Colors.white,
-                        ),
-                      ),
-                    )),
-              ],
+  Widget buildViewModelWidget(BuildContext context, LoginPageViewModel model) {
+    // return ViewModelBuilder<LoginPageViewModel>.reactive(
+    //     viewModelBuilder: () => LoginPageViewModel(),
+    //     builder: (context, model, child) {
+    model.readData();
+    return Center(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Container(
+            padding: EdgeInsets.only(bottom: 40),
+            constraints: BoxConstraints(
+              maxWidth: 400,
+              minWidth: 200,
             ),
-          );
-        });
+            child: Align(
+              alignment: Alignment.center,
+              child: "SIGNIN"
+                  .text
+                  .textStyle(GoogleFonts.montserrat())
+                  .color(Colors.white)
+                  .xl5
+                  .make(),
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.all(10),
+            constraints: BoxConstraints(
+              maxWidth: 400,
+              minWidth: 200,
+            ),
+            child: TextField(
+              onChanged: (schoolCode) {},
+              keyboardType: TextInputType.text,
+              style: bodyTextStyle(context, color: Colors.white),
+              decoration:
+                  kTextFieldDecorationWithIcon(context, icon: Icons.school)
+                      .copyWith(
+                hintText: StringConstants.school_name_code_hint,
+                labelText: StringConstants.school_name_code,
+              ),
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.all(10),
+            constraints: BoxConstraints(
+              maxWidth: 400,
+              minWidth: 200,
+            ),
+            child: TextField(
+              onChanged: (email) {},
+              keyboardType: TextInputType.emailAddress,
+              style: bodyTextStyle(context, color: Colors.white),
+              decoration:
+                  kTextFieldDecorationWithIcon(context, icon: Icons.email)
+                      .copyWith(
+                hintText: StringConstants.email_hint,
+                labelText: StringConstants.email,
+              ),
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.all(10),
+            constraints: BoxConstraints(
+              maxWidth: 400,
+              minWidth: 200,
+            ),
+            child: TextField(
+              onChanged: (password) {},
+              keyboardType: TextInputType.text,
+              obscureText: true,
+              style: bodyTextStyle(context, color: Colors.white),
+              decoration: kTextFieldDecorationWithIcon(
+                context,
+                icon: Icons.vpn_key,
+              ).copyWith(
+                hintText: StringConstants.password_hint,
+                labelText: StringConstants.password,
+              ),
+            ),
+          ),
+          Container(
+              padding: EdgeInsets.all(10),
+              constraints:
+                  BoxConstraints(maxWidth: 400, minWidth: 200, minHeight: 80),
+              child: FlatButton(
+                hoverColor: Colors.redAccent.shade700,
+                color: Colors.redAccent,
+                onPressed: () {
+                  model.navigateToAddUser();
+                },
+                child: Center(
+                  child: TextHeadlineSecondary(
+                    text: StringConstants.login.toUpperCase(),
+                    color: Colors.white,
+                  ),
+                ),
+              )),
+        ],
+      ),
+    );
+    // });
   }
 }
